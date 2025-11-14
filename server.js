@@ -17,6 +17,8 @@ app.get('/', (req, res) => {
 });
 
 
+app.get('/upload',(req,res)=>{})
+
 server.listen(process.env.PORT,()=>{
     console.log("server is running in http://localhost:3000")
 })
