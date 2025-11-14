@@ -12,6 +12,7 @@ router.post('/login', Validator.body(loginSchema),loginUser);
 router.get('/google',loginWithGoogle)
 router.get('/google/callback',googleAuth);  
 router.get('/profile',authenticateToken, profile)
+router.post('/uploads',authenticateToken,upload.single('profile'),setProfile)
 
 
 module.exports = router;
