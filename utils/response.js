@@ -15,11 +15,38 @@ const response = {
     USER_NOT_FOUND:"user not found",
     INVALID_LOGIN:"invalid login",
     LOGIN_SUCCESS:"login successfully",
+
+    MISSING_TOKEN:"missing token",
+    UNAUTHORIZED:"unauthorized token",
+    BLOCK:"you are blocked",
     
     PROFILE_GET_SUCCESS:"profile get successfully",
     PROFILE_GET_FAILED:"profile get failed",
 
+    NO_UNITS_FOUND:"no units found",
+    GET_UNITS_SUCCESS:"get unit successfully",
+    UNITS_NOT_FOUND:"unit not found",
+    GET_UNITS_SUCCESS:"get unit success",
+    UNITS_CREATED_SUCCESS:"unit created successfully",
+    UNITS_ALREADY_EXISTS:"units already exist",
+    UNITS_UPDATED_SUCCESS:"unit updated successfully",
+    UNITS_DELETED_SUCCESS:"units deleted successfully",
 
+   GET_CATEGORIES_SUCCESS:"get categories successfully",
+   CATEGORIES_CREATED_SUCCESS:"category created success",
+   CATEGORIES_UPDATED_SUCCESS:"category updated successfully",
+   CATEGORIES_GET_ERROR:"category get error ",
+   CATEGORIES_DELETED_SUCCESS:"categories deleted successfully",
+   CATEGORIES_ALREADY_EXISTS:"categories already exists",
+   CATEGORIES_NOT_FOUND:"categories not found",
+
+   NO_PRODUCTS_FOUND:"",
+   GET_PRODUCTS_SUCCESS:"",
+   PRODUCT_CREATED_SUCCESS:"",
+   PRODUCT_ALREADY_EXISTS:"",
+   PRODUCT_NOT_FOUND:"",
+   PRODUCT_UPDATED_SUCCESS:"",
+   PRODUCT_DELETED_SUCCESS:"",
 
 };
 

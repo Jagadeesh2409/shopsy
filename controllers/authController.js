@@ -141,23 +141,26 @@ const loginWithGoogle = (req, res) => {
 
 const profile = async (req, res) => {
   const id = req.user.id;
-  console.log(id)
   try {
     const user = await db("users").where({ id }).first();
     if (!user) {
       ErrorResponse(res, response.PROFILE_GET_FAILED);
     }
-    SucessResponse(res, user, response.PROFILE_GET_SUCCESS);
+
+    const data = {
+      name:user.username,
+      email:user.email,
+      phone_number:user.phone_number
+    }
+
+    SucessResponse(res, data, response.PROFILE_GET_SUCCESS);
   } catch (error) {
     console.log(error.message);
     ErrorResponse(res, response.ISE);
   }
 };
 
-const setProfile = async(req,res) => {
-    const path = req.file.path
-    console.log(path)
-}
+
 
 
 module.exports = {
@@ -166,5 +169,5 @@ module.exports = {
   googleAuth,
   loginWithGoogle,
   profile,
-  setProfile
+ 
 };

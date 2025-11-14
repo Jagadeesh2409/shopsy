@@ -11,6 +11,8 @@ const {sessionObj} = require('./config/googleConfig')
 const session = require('express-session')
 
 const authRoute = require('./routes/authRoute')
+const unitRoute = require('./routes/unitRoute')
+const categoriesRoute = require('./routes/categoriesRoute')
 
  const io = initSocket(server);
  app.io = io
@@ -21,13 +23,12 @@ app.use(express.json())
 
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
-
-
 app.use('/auth',authRoute)
+app.use('/units',unitRoute)
+app.use('/categories',categoriesRoute)
 
 app.use(errorHandler)
 
-app.get('/upload',(req,res)=>{})
 
 server.listen(process.env.PORT,()=>{
     console.log("server is running in http://localhost:3000")
