@@ -4,11 +4,16 @@ let io;
 
 const initSocket = (server) => {
     io = socketIO(server);
-
     io.on('connection', (socket) => {
         console.log("Socket connected")
+        socket.on('hello',()=>{
+            console.log("auth registered")
+        })
+        socket.on('j',()=>{
+            console.log("reg")
+        })
     })
-
+    return io
 }
 
 const getIO = () => {
@@ -18,7 +23,8 @@ const getIO = () => {
       return io;
 }
 
+
 module.exports = {
     initSocket,
-    getIO
+    getIO, 
 }

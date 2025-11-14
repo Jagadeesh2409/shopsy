@@ -5,16 +5,26 @@ require('dotenv').config()
 const { createServer } = require('http');
 const server = createServer(app);
 const { join } = require('path');
-const { initSocket } = require('./socketHandler');
+const { initSocket ,getIO} = require('./socketHandler');
+const {errorHandler} = require('./utils/error')
+const {sessionObj} = require('./config/googleConfig')
+const session = require('express-session')
 
-initSocket(server);
+const authRoute = require('./routes/authRoute')
+
+ const io = initSocket(server);
+ app.io = io
+
+app.use(session(sessionObj))
 
 app.use(express.json())
 
 
-app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
-});
+
+
+app.use('/auth',authRoute)
+
+app.use(errorHandler)
 
 
 app.get('/upload',(req,res)=>{})
