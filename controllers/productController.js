@@ -1,105 +1,83 @@
 const db = require('../db/db');
-const { SuccessResponse, ErrorResponse, response } = require('../utils/response');
+const {  ErrorResponse, response, SucessResponse} = require('../utils/response');
 const _ = require('lodash');
 
 
-const getAllProducts = async (req, res) => {
+const createProduct = async (req,res) => {
   try {
-    const products = await db('products').where({ is_deleted: false });
-    if (!products.length) {
-      return SuccessResponse(res, [], response.NO_PRODUCTS_FOUND);
+    const productData = req.body
+    productData.slug = _.kebabCase(`${productData.name}-${productData.mrp}-${productData.brand}`)
+    const exist = await db('products').where({slug:productData.slug}).first()
+    if(exist){
+      return ErrorResponse(res,response.PRODUCT_ALREADY_EXISTS)
     }
-    return SuccessResponse(res, products, response.GET_PRODUCTS_SUCCESS);
+    const data = await db('products').insert(productData)
+    SucessResponse(res,productData,response.PRODUCT_CREATED_SUCCESS)    
   } catch (error) {
-    return ErrorResponse(res, response.ISE, 500);
+    ErrorResponse(res,response.ISE)
   }
-};
+}
 
-
-const createProduct = async (req, res) => {
+const getAllProducts = async (req,res) => {
   try {
-    const product = req.body;
-    productData.slug = _.kebabCase(product.name);
-
-    const [newProductId] = await db('products').insert(productData);
-    const newProduct = await db('products').where({ id: newProductId }).first();
-
-    return SuccessResponse(res, newProduct, response.PRODUCT_CREATED_SUCCESS);
+    const data = await db('products').where({is_deleted:false})
+    SucessResponse(res,data,response.GET_PRODUCTS_SUCCESS)
   } catch (error) {
-    console.error('Error creating product:', error);
-
-    if (error.code === 'ER_DUP_ENTRY' || error.code === 'SQLITE_CONSTRAINT') {
-      return ErrorResponse(res, response.PRODUCT_ALREADY_EXISTS, 400);
-    }
-
-    return ErrorResponse(res, response.ISE, 500);
+    ErrorResponse(res,response.ISE)
   }
-};
+}
 
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req,res) => {
+  const {id} = req.params
+  const data = req.body
   try {
-    const { id } = req.params;
-    const productData = req.body;
 
-    await db('products').where({ id }).update({
-      ...productData,
-      updated_at: db.fn.now(),
-    });
-
-    const updatedProduct = await db('products').where({ id }).first();
-
-    if (!updatedProduct) {
-      return ErrorResponse(res, response.PRODUCT_NOT_FOUND, 404);
+    const exist = await db('products').where({id,is_deleted:false}).first()
+    if(!exist){
+      ErrorResponse(res,response.PRODUCT_NOT_FOUND)
     }
-
-    return SuccessResponse(res, updatedProduct, response.PRODUCT_UPDATED_SUCCESS);
+    await db('products').update(data).where({id})
+    SucessResponse(res,null,response.PRODUCT_UPDATED_SUCCESS)
+    
   } catch (error) {
-    console.error('Error updating product:', error);
-    return ErrorResponse(res, response.ISE, 500);
+    if ( error.code == 'ER_DUP_ENTRY') {
+      return ErrorResponse(res,response.PRODUCT_ALREADY_EXISTS);
+    }
+    console.log(error.message)
+    ErrorResponse(res,response.ISE)
   }
-};
+}
 
-
-const deleteProduct = async (req, res) => {
+const getProductById = async (req,res) => {
+  const {id} =  req.params
   try {
-    const { id } = req.params;
-    const result = await db('products').where({ id }).update({ is_deleted: true });
-
-    if (!result) {
-      return ErrorResponse(res, response.PRODUCT_NOT_FOUND, 404);
+    const data = await db('products').where({id,is_deleted:false}).first()
+    if(!data){
+      return ErrorResponse(res,response.PRODUCT_NOT_FOUND)
     }
-
-    return SuccessResponse(res, null, response.PRODUCT_DELETED_SUCCESS);
+    SucessResponse(res,data,response.GET_PRODUCTS_SUCCESS)
+    
   } catch (error) {
-    console.error('Error deleting product:', error);
-    return ErrorResponse(res, response.ISE, 500);
+    ErrorResponse(res,response.ISE)
+    
   }
-};
+}
 
+const deleteProduct = async (req,res) => {
+  const {id} = req.params
 
-const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await db('products')
-      .where({ id, is_deleted: false })
-      .first();
-
-    if (!product) {
-      return ErrorResponse(res, response.PRODUCT_NOT_FOUND, 404);
+    const product =  await db('products').where({id,is_deleted:false})
+    if(!product){
+      return ErrorResponse(res,response.PRODUCT_NOT_FOUND)
     }
-
-    return SuccessResponse(res, product, response.GET_PRODUCTS_SUCCESS);
+    await db('products').update({is_deleted:true}).where({id})
+    SucessResponse(res,null,response.PRODUCT_DELETED_SUCCESS)
   } catch (error) {
-    console.error('Error fetching product by ID:', error);
-    return ErrorResponse(res, response.ISE, 500);
+    ErrorResponse(res,response.ISE)
   }
-};
+}
 
-module.exports = {
-  getAllProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  getProductById,
-};
+
+module.exports = {createProduct,getAllProducts,updateProduct,getProductById,deleteProduct}

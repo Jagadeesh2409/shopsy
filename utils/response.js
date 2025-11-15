@@ -40,13 +40,20 @@ const response = {
    CATEGORIES_ALREADY_EXISTS:"categories already exists",
    CATEGORIES_NOT_FOUND:"categories not found",
 
-   NO_PRODUCTS_FOUND:"",
-   GET_PRODUCTS_SUCCESS:"",
-   PRODUCT_CREATED_SUCCESS:"",
-   PRODUCT_ALREADY_EXISTS:"",
-   PRODUCT_NOT_FOUND:"",
-   PRODUCT_UPDATED_SUCCESS:"",
-   PRODUCT_DELETED_SUCCESS:"",
+   NO_PRODUCTS_FOUND:"product not found",
+   GET_PRODUCTS_SUCCESS:"get product successfully",
+   PRODUCT_CREATED_SUCCESS:"product created successfully",
+   PRODUCT_ALREADY_EXISTS:"product already exists",
+   PRODUCT_NOT_FOUND:"product not found",
+   PRODUCT_UPDATED_SUCCESS:"product updated successfully",
+   PRODUCT_DELETED_SUCCESS:"prodcut deleted successfully",
+
+   DISCOUNT_CREATED_SUCCESS:"discount created success",
+   DISCOUNT_ALREADY_EXIST:"discount already exist",
+   GET_DISCOUNT_SUCCESS:"get discounts successfully",
+   DISCOUNT_NOT_FOUND:"discount not found",
+   DISCOUNT_DELETED_SUCCESSFULLY:"discount deleted successfully",
+   DISSCOUT_UPDATED:"discount updated successfully"
 
 };
 

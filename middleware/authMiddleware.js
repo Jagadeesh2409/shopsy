@@ -25,13 +25,11 @@ const authenticateToken = (req, res, next) => {
 
 const adminAuthenticate = (req, res, next) => {
 
-    if (!req.user || !req.user.is_admin) {
+    if (!req.user.is_admin) {
         return ErrorResponse(res, response.UNAUTHORIZED, 403);
     }
     next();
 };
-
-
 
 module.exports = { authenticateToken,adminAuthenticate };
 
